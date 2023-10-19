@@ -3,7 +3,7 @@ node {
     def dockerImage = 'node:16-buster-slim'
 
     triggers {
-        pollSCM('* * * *') 
+        pollSCM('* * * * *') 
     }
 
     stage('Build') {
