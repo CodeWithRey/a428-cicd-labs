@@ -1,9 +1,12 @@
 node {
     def dockerImage = 'node:16-buster-slim'
 
-    triggers {
-        pollSCM('*/2 * * * *')
-    }
+    properties([
+        pipelineTriggers([
+            [$class: 'SCMTrigger', scmpollspec: '*/2 * * * *']
+        ])
+    ])
+
 
     stage('Build') {
         steps {
