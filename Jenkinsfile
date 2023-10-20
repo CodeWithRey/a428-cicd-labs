@@ -23,4 +23,16 @@ node {
                 error "Tests failed: ${e.message}"
             }
         }
+    stage('Deploy') {
+         try {
+                docker.image(dockerImage).inside(portDockerImage) {
+                        sh './jenkins/scripts/deliver.sh'
+                        input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)'
+                        sh './jenkins/scripts/kill.sh'
+                }
+            } catch (Exception e) {
+                currentBuild.result = 'FAILURE'
+                error "Deploy failed: ${e.message}"
+            }
     }
+}
