@@ -1,6 +1,6 @@
 node {
     def dockerImage = 'node:16-buster-slim'
-    def portDockerImage = "-p 3000:3000":
+    def portDockerImage = "-p 3000:3000"
 
     stage('Build') {
             try {
