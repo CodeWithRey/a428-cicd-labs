@@ -2,10 +2,6 @@ node {
 
     def dockerImage = 'node:16-buster-slim'
 
-    triggers {
-        pollSCM('*/2 * * * *') 
-    }
-
     stage('Build') {
 
         echo 'Building the project...'
