@@ -1,13 +1,6 @@
 node {
     def dockerImage = 'node:16-buster-slim'
 
-    properties([
-        pipelineTriggers([
-            [$class: 'SCMTrigger', scmpollspec: '*/2 * * * *']
-        ])
-    ])
-
-
     stage('Build') {
         steps {
             echo 'Building the project...'
