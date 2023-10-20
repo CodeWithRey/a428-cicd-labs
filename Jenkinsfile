@@ -45,7 +45,17 @@ node {
         }
 
     }
+    stage('Deploy') {
+        try {
+            sh './jenkins/scripts/deliver.sh'
+            input message: 'Sudah selesai menggunakan React Apps? (Klik "Proceed" untuk mengakhiri)'
+            sh './jenkins/scripts/kill.sh'
 
-   
+        } catch (Exception e) {
+            currentBuild.result = 'FAILURE'
+            error "Deploy failed: ${e.message}"
+    }
 
 }
+
+}   
