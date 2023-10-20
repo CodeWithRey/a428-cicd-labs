@@ -1,5 +1,4 @@
 node {
-
     def dockerImage = 'node:16-buster-slim'
 
     triggers {
@@ -7,46 +6,30 @@ node {
     }
 
     stage('Build') {
-
-        echo 'Building the project...'
-
-        try {
-
-            docker.image(dockerImage).inside("-p 3000:3000") {
-
-                sh 'npm install'
-
+        steps {
+            echo 'Building the project...'
+            try {
+                docker.image(dockerImage).inside("-p 3000:3000") {
+                    sh 'npm install'
+                }
+            } catch (Exception e) {
+                currentBuild.result = 'FAILURE'
+                error "Build failed: ${e.message}"
             }
-
-        } catch (Exception e) {
-
-            currentBuild.result = 'FAILURE'
-
-            error "Build failed: ${e.message}"
-
         }
-
     }
 
     stage('Test') {
-
-        echo 'Running tests...'
-
-        try {
-
-            docker.image(dockerImage).inside("-p 3000:3000") {
-
-                sh './jenkins/scripts/test.sh'
-
+        steps {
+            echo 'Running tests...'
+            try {
+                docker.image(dockerImage).inside("-p 3000:3000") {
+                    sh './jenkins/scripts/test.sh'
+                }
+            } catch (Exception e) {
+                currentBuild.result = 'FAILURE'
+                error "Tests failed: ${e.message}"
             }
-
-        } catch (Exception e) {
-
-            currentBuild.result = 'FAILURE'
-
-            error "Tests failed: ${e.message}"
-
         }
-
     }
-}   
+}
