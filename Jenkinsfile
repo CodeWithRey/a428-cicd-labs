@@ -2,7 +2,6 @@ node {
     def dockerImage = 'node:16-buster-slim'
 
     stage('Build') {
-        steps {
             echo 'Building the project...'
             try {
                 docker.image(dockerImage).inside("-p 3000:3000") {
@@ -13,10 +12,8 @@ node {
                 error "Build failed: ${e.message}"
             }
         }
-    }
 
     stage('Test') {
-        steps {
             echo 'Running tests...'
             try {
                 docker.image(dockerImage).inside("-p 3000:3000") {
@@ -28,4 +25,3 @@ node {
             }
         }
     }
-}
