@@ -1,10 +1,10 @@
 node {
     def dockerImage = 'node:16-buster-slim'
+    def portDockerImage = '-p 3000:3000':
 
     stage('Build') {
-            echo 'Building the project...'
             try {
-                docker.image(dockerImage).inside("-p 3000:3000") {
+                docker.image(dockerImage).inside(portDockerImage) {
                     sh 'npm install'
                 }
             } catch (Exception e) {
@@ -14,9 +14,8 @@ node {
         }
 
     stage('Test') {
-            echo 'Running tests...'
             try {
-                docker.image(dockerImage).inside("-p 3000:3000") {
+                docker.image(dockerImage).inside(portDockerImage) {
                     sh './jenkins/scripts/test.sh'
                 }
             } catch (Exception e) {
