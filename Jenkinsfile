@@ -23,11 +23,19 @@ node {
                 error "Tests failed: ${e.message}"
             }
         }
+    stage('Manual Approval') {
+        try {
+            input message: 'Lanjutkan ke tahap Deploy? (Klik "Proceed" untuk melanjutkan)'
+        }
+        catch (Exception e) {
+                currentBuild.result = 'FAILURE'
+                error "Approval failed: ${e.message}"
+        }
+    }
     stage('Deploy') {
          try {
                 docker.image(dockerImage).inside(portDockerImage) {
                         sh './jenkins/scripts/deliver.sh'
-                        input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)'
                         sh './jenkins/scripts/kill.sh'
                         sleep(time:1, unit:"MINUTES")
                 }
